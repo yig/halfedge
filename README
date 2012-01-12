@@ -1,0 +1,32 @@
+Author: Yotam Gingold <yotam (strudel) yotamgingold.com>
+License: Public Domain.  (I, Yotam Gingold, the author, release this code into the public domain.)
+GitHub: https://github.com/yig/halfedge
+
+trimesh.h trimesh_t:
+    A C++ half-edge data structure for a triangle mesh with no external dependencies whatsoever that
+        - handles boundaries (the first outgoing halfedge at a vertex is always a boundary halfedge)
+          (and the last outgoing halfedge is always the opposite of a boundary halfedge))
+        - stores topology only; it does not "own" or store your vertices;
+          rather it looks only at faces and only while building the half-edges
+          (make sure to re-create the half-edges anytime the faces change!)
+
+example.cpp:
+    A very simple file to show usage of trimesh_t.
+    Compile it with the one-liner at the top.
+
+Usage:
+    std::vector< trimesh::triangle_t > triangles;
+    
+    // ... fill triangles ...
+    
+    std::vector< trimesh::edge_t > edges;
+    trimesh::unordered_edges_from_triangles( triangles.size(), &triangles[0], edges );
+    
+    trimesh::trimesh_t mesh;
+    mesh.build( num_vertices, triangles.size(), &triangles[0], edges.size(), &edges[0] );
+    
+    // Use 'mesh' to walk the connectivity.
+
+Version History:
+    - 2012-01-12:
+        initial release
